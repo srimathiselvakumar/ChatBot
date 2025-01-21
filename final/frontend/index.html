@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chatbot | Improved Version</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="chatbot-popup">
+    <!-- Chat Header -->
+    <div class="chat-header">
+      <div class="header-info">
+        <img src="logo.png" alt="Chatbot Logo" width="50" height="50" class="chatbot-logo">
+        <h2 class="logo-text">Chatbot</h2>
+      </div>
+      <button id="close-chatbot" class="material-symbols-rounded">keyboard_arrow_down</button>
+    </div>
+
+    <!-- Chatbot Body -->
+    <div class="chat-body" id="chat-body">
+      <!-- Bot Message -->
+      <div class="message bot-message">
+        <img src="logo.png" alt="Chatbot Logo" width="50" height="50" class="bot-avatar">
+        <div class="message-text">Hey there! 👋🌟✨ <br /> How can I help you today? 😊</div>
+      </div>
+    </div>
+
+    <!-- Chat Footer -->
+    <div class="chat-footer">
+      <form action="#" class="chat-form" onsubmit="return sendMessage()">
+        <textarea id="userInput" placeholder="Type your message here..." class="message-input"></textarea>
+        <input type="file" id="fileInput" style="display: none;" />
+        <div class="chat-controls">
+          <!-- Emoji Button -->
+          <button type="button" id="emoji-btn" class="material-symbols-rounded">sentiment_satisfied</button>
+          <!-- Attach File Button -->
+          <button type="button" id="attach-file-btn" class="material-symbols-rounded">attach_file</button>
+          <!-- Send Message Button -->
+          <button type="submit" class="material-symbols-rounded">arrow_upward</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Script Section -->
+  <script>
+    // Function to send user message and bot response
+    function sendMessage() {
+      const userMessage = document.getElementById("userInput").value;
+      const chatBody = document.getElementById("chat-body");
+
+      if (userMessage.trim() === "") return false;  // Prevent empty messages
+
+      // Add user message
+      const userMessageDiv = document.createElement("div");
+      userMessageDiv.className = "message user-message";
+      userMessageDiv.innerHTML = `<div class="message-text">${userMessage}</div>`;
+      chatBody.appendChild(userMessageDiv);
+      document.getElementById("userInput").value = "";
+
+      // Bot responses based on user input
+      let botReply = "I'm a bot! How can I assist you? 🤖💬";
+
+      if (userMessage.toLowerCase().includes("hello")) {
+        botReply = "Hello! 🌈 How can I assist you today? 😊";
+      } else if (userMessage.toLowerCase().includes("your name")) {
+        botReply = "I'm Chatbot, your virtual assistant! 🤖";
+      } else if (userMessage.toLowerCase().includes("help")) {
+        botReply = "Sure, I'm here to help you. What do you need assistance with? 🤗";
+      }
+
+      // Simulate bot response after a delay
+      setTimeout(() => {
+        const botMessageDiv = document.createElement("div");
+        botMessageDiv.className = "message bot-message";
+        botMessageDiv.innerHTML = `<img src="logo.png" width="50" height="50" class="bot-avatar">
+          <div class="message-text">${botReply}</div>`;
+        chatBody.appendChild(botMessageDiv);
+
+        // Scroll to the bottom of chat
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }, 1000);
+
+      return false; // Prevent page reload
+    }
+
+    // Detect Enter key press on the input field
+    document.getElementById("userInput").addEventListener("keydown", function (event) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault(); // Prevent line break in textarea
+        sendMessage(); // Send the message
+      }
+    });
+
+    // Attach file functionality
+    document.getElementById("attach-file-btn").addEventListener("click", function() {
+      document.getElementById("fileInput").click();
+    });
+
+    document.getElementById("fileInput").addEventListener("change", function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const chatBody = document.getElementById("chat-body");
+        const fileMessageDiv = document.createElement("div");
+        fileMessageDiv.className = "message user-message";
+        fileMessageDiv.innerHTML = `<div class="message-text">📎 You uploaded: ${file.name}</div>`;
+        chatBody.appendChild(fileMessageDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+    });
+
+    // Emoji functionality (mock)
+    document.getElementById("emoji-btn").addEventListener("click", function() {
+      const emojiList = ["😊", "🌟", "🎉", "🚀", "😄", "🌈", "❤️"];
+      const randomEmoji = emojiList[Math.floor(Math.random() * emojiList.length)];
+      const inputField = document.getElementById("userInput");
+      inputField.value += randomEmoji;
+      inputField.focus();
+    });
+  </script>
+</body>
+</html>
